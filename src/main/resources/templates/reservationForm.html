@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <div th:replace="shared/header :: header-css"/>
+
+
+    <script src="https://code.jquery.com/jquery-2.1.3.min.js"></script>
+    <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
+
+
+</head>
+<body>
+<div th:replace="shared/header :: header('home')"/>
+
+
+<div class="container">
+
+
+
+            <form th:method="POST" th:object="${reservation}" th:action="@{/reservationForm.html}">
+                <fieldset>
+                    <h1>Rezerwacja</h1>
+                    <div class="row" th:align="center" >
+                        <div class="col-md-6 col-md-offset-3" th:align="center" style="background-color: gray">EKRAN</div>
+
+                    </div>
+                    <br>
+                    <br>
+                    <br>
+                    <br>
+
+                        <div  th:align="center"  data-toggle="buttons">
+                        <th:block th:each="seat, iter : ${seats}" >
+                       <label th:if="${seat}>0"   class="btn btn-success" th:for="${seats}">
+                        <input  autocomplete="off"  th:id="${seat}" th:field="*{seat}"  th:type="checkbox"  th:value="${seat}">
+
+                            <div th:if="${seat}<10">
+                                <p>0[[${seat}]]</p>
+                            </div>
+                            <div th:if="${seat}>9">
+                                <p>[[${seat}]]</p>
+                            </div>
+
+
+                        </label>
+
+
+                            <label th:unless="${seat}>0"   class="btn btn-danger disabled" th:for="${seats}">
+                                <input  autocomplete="off"  th:id="${seat}"   th:type="checkbox"  th:name="${seat}">
+
+                                <div th:if="${iter.count}<10">
+                                    <p>[[${iter.count}]]</p>
+                                </div>
+                                <div th:if="${iter.count}>9">
+                                    <p> [[${iter.count}]]</p>
+                                </div>
+
+
+
+                            </label>
+
+
+
+
+
+
+
+
+
+
+
+
+                            <div th:if="${seat}==10">
+                            <br>
+                            </div>
+                            <div th:if="${seat}==20">
+                                <br>
+                            </div>
+                            <div th:if="${seat}==30">
+                                <br>
+                            </div>
+                            <div th:if="${seat}==40">
+                                <br>
+                            </div>
+                            <div th:if="${seat}==50">
+                                <br>
+                            </div>
+                            <div th:if="${seat}==60">
+                                <br>
+                            </div>
+                            <div th:if="${seat}==70">
+                                <br>
+                            </div>
+                            <div th:if="${seat}==80">
+                                <br>
+                            </div>
+
+                            <div th:if="${seat}==90">
+                                <br>
+                            </div>
+
+                            <div th:if="${seat}==100">
+                            <br>
+                        </div>
+                            <div th:if="${seat}==110">
+                                <br>
+                            </div>
+                            <div th:if="${seat}==120">
+                                <br>
+                            </div>
+                            <div th:if="${seat}==130">
+                                <br>
+                            </div>
+                            <div th:if="${seat}==140">
+                                <br>
+                            </div>
+
+                            <div th:if="${seat}==150">
+                                <br>
+                            </div>
+
+                            <div th:if="${seat}==160">
+                                <br>
+                            </div>
+
+                            <div th:if="${seat}==170">
+                                <br>
+                            </div>
+
+                            <div th:if="${seat}==180">
+                                <br>
+                            </div>
+
+                            <div th:if="${seat}==190">
+                                <br>
+                            </div>
+
+                            <div th:if="${seat}==200">
+                                <br>
+                            </div>
+
+
+                        </th:block>
+                        </div>
+
+
+                    <br>
+                    <br>
+                    <br>
+
+
+
+
+
+
+                            <input th:align="center" type="submit" class="btn btn-lg btn-primary btn-block" value="Rezerwuj"/>
+
+                        <div class="col-xs-6 col-sm-6 col-md-6">
+                            <input type="hidden" th:field="*{id}"/>
+                            <input type="hidden" th:field="*{show}"/>
+                            <input type="hidden" th:field="*{times}"/>
+                            <input type="hidden" th:field="*{user.id}"/>
+                            <input
+                                    type="hidden"
+                                    th:name="${_csrf.parameterName}"
+                                    th:value="${_csrf.token}"/>
+                        </div>
+
+                </fieldset>
+
+            </form>
+        </div>
+    </div>
+</div>
+
+
+</body>
+</html>

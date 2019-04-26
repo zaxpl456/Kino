@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <div th:replace="shared/header :: header-css"/>
+    <title>Dodawanie filmu</title>
+</head>
+<body>
+<div th:replace="shared/header :: header('home')"/>
+
+<div class="container">
+    <div class="row" style="margin-top:20px">
+        <div class="col-xs-12 col-sm-8 col-md-6 col-sm-offset-2 col-md-offset-3">
+            <form th:method="POST" th:object="${show}" th:action="@{/showForm.html}">
+                <fieldset>
+                    <h1>Dodawanie/Edycja</h1>
+
+                    <br>
+
+
+                    <p>Wybierz film</p>
+                    <select th:field="*{movie.id}" name="movie.id" class="form-control"
+                            th:classappend="${#fields.hasErrors('movie.id')}?'is-invalid'">
+                        <option value="-1">--Wybierz film--</option>
+                        <option th:each="type : ${movie}"
+                                th:value="${type.id}"
+                                th:text=" ${type.title}"
+                        />
+                    </select>
+
+
+
+                    <div class="form-group">
+                        <p>Data seansu</p>
+                        <input type="date" name="showDate" th:value="*{showDate}"
+                               class="form-control" th:classappend="${#fields.hasErrors('showDate')}?'is-invalid'"
+                               placeholder="Data seansu" required="true" autofocus="true"/>
+
+                        <div class="error text-danger" th:if="${#fields.hasErrors('showDate')}">
+                            <span th:each="err : ${#fields.errors('showDate')}" th:text="${err}"></span>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div th:each="time : ${timess}" class='checkbox' style="left:25px;">
+                            <input th:id="${time}" type="checkbox" th:field="*{times}"
+                                   th:value="${time.id}"/>
+                            <label th:text="${time.time}" th:for="${time}"></label>
+                        </div>
+
+                        <div class="error text-danger" th:if="${#fields.hasErrors('times')}">
+                            <p th:each="err : ${#fields.errors('times')}" th:text="${err}"></p>
+                        </div>
+                    </div>
+
+
+
+
+
+
+                    <p>Wybierz salę</p>
+                    <select th:field="*{hall.id}" name="hall" class="form-control"
+                            th:classappend="${#fields.hasErrors('hall.id')}?'is-invalid'">
+                        <option value="-1">--Wybierz salę--</option>
+                        <option th:each="type : ${halls}"
+                                th:value="${type.id}"
+                                th:text="${type.id}"
+                        />
+                    </select>
+
+
+
+
+
+
+
+
+
+
+                    <div class="row">
+                        <div class="col-xs-6 col-sm-6 col-md-6">
+                            <input type="submit" class="btn btn-lg btn-primary btn-block" value="Zapisz"/>
+                        </div>
+                        <div class="col-xs-6 col-sm-6 col-md-6">
+                            <input type="hidden" th:field="*{id}"/>
+                            <input
+                                    type="hidden"
+                                    th:name="${_csrf.parameterName}"
+                                    th:value="${_csrf.token}"/>
+                        </div>
+                    </div>
+                </fieldset>
+
+            </form>
+        </div>
+    </div>
+</div>
+
+
+</body>
+</html>

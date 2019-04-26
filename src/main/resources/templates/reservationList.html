@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<head>
+    <div th:replace="shared/header :: header-css"/>
+    <title>Strona domowa</title>
+</head>
+<body>
+<div th:replace="shared/header :: header('home')"/>
+
+
+    <div id="main" class="container">
+
+
+        <H1>Wyszukaj rezerwację</H1>
+
+        <form th:method="POST" th:action="@{reservationList.html}" th:object="${searchCommand}">
+            <div class="row">
+                <div class="form-group col-md-6">
+                    <input th:field="*{phrase}" placeholder="Nazwisko" class="form-control"
+                           th:classappend="${#fields.hasErrors('phrase')}?'is-invalid'"/>
+                    <div class="error text-danger" th:if="${#fields.hasErrors('phrase')}">
+                        <p th:each="err : ${#fields.errors('phrase')}" th:text="${err}"></p>
+                    </div>
+
+                    <input th:field="*{date}" th:type="date" placeholder="Data" class="form-control"
+                           th:classappend="${#fields.hasErrors('phrase')}?'is-invalid'"/>
+                    <div class="error text-danger" th:if="${#fields.hasErrors('phrase')}">
+                        <p th:each="err : ${#fields.errors('phrase')}" th:text="${err}"></p>
+                    </div>
+                </div>
+
+
+
+
+
+
+                <div class="form-group col-md-2">
+                    <button type="submit" class="btn btn-info">
+                        <span class="glyphicon glyphicon-search"></span> Wyszukaj
+                    </button>
+                </div>
+            </div>
+
+        </form>
+
+
+        <div th:if="${reservationListPage.hasContent() eq false}">
+            <span th:if="${searchCommand.isEmpty()}">Brak elementów w bazie</span>
+            <span th:unless="${searchCommand.isEmpty()}">Brak wyników wyszukiwania</span>
+        </div>
+        <div th:if="${reservationListPage.hasContent() eq true}">
+
+
+
+            <span th:if="${searchCommand.isEmpty()}">
+                Baza zawiera [[${reservationListPage.totalElements}]] rezerwacje
+            </span>
+            <span th:unless="${searchCommand.isEmpty()}">
+                Wynik wyszukiwania: [[${reservationListPage.totalElements}]] rezerwacje
+            </span>
+
+            <table class="table table-striped">
+                <thead class="thead-dark">
+                <tr>
+                    <th>Id rezerwacji</th>
+                    <th>Film</th>
+                    <th>Godzina</th>
+                    <th>Imie</th>
+                    <th>Nazwisko</th>
+
+
+                    <th>Data</th>
+
+                    <th sec:authorize="hasRole('ADMIN')">Opcje</th>
+
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="reservation : ${reservationListPage.content}">
+
+                    <td>
+                        <span > [[${reservation.id}]]</span>
+                    </td>
+
+                    <td>[[${reservation.show.movie.title}]]</td>
+                    <td>[[${reservation.times.time}]]</td>
+                    <td>[[${reservation.user.name}]]</td>
+                    <td>[[${reservation.user.surname}]]</td>
+                    <td>[[${reservation.show.showDate}]]</td>
+
+                    <td sec:authorize="hasRole('ROLE_ADMIN')">
+                        <a class="btn btn-danger" th:href="@{reservationList.html(did=${reservation.id})}">Usuń</a>
+                    </td>
+
+                </tr>
+
+                </tbody>
+            </table>
+
+
+        </div>
+
+
+
+    </div>
+</div>
+<div th:replace="shared/footer :: footer"></div>
+</body>
+</html>

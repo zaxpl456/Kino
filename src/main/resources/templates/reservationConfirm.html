@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<head>
+    <div th:replace="shared/header :: header-css"/>
+    <title>Dodatkowe informacje</title>
+</head>
+<body>
+<div th:replace="shared/header :: header('home')"/>
+
+<div id="main" class="container">
+    <H1>Powierdzenie rezerwacji</H1>
+    <table>
+
+        <tr>
+            <td >
+
+
+
+                Nazwa: <b th:text="${reservation.show.movie.title}"></b><br/>
+                Godzina: <b th:text="${reservation.times.time}"></b><br/>
+                Data: <b th:text="${reservation.show.showDate}"></b><br/>
+                Miejsca:
+                <br>
+                <th:block  th:each="seat : ${reservation.seat}" >
+                <b th:text="${seat}"></b><br/>
+            </th:block>
+
+                <br>
+                <br>
+
+                <form th:method="POST"  th:action="@{/reservationSuccess.html}">
+
+
+                <input type="submit" class="btn btn-success" >
+
+                </form>
+
+
+
+
+            </td>
+        </tr>
+        <br/>
+    </table>
+</div>
+<div th:replace="shared/footer :: footer"></div>
+</body>
+</html>

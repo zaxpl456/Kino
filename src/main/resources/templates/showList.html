@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<head>
+    <div th:replace="shared/header :: header-css"/>
+    <title>Repertuar</title>
+</head>
+<body>
+<div th:replace="shared/header :: header('home')"/>
+
+<H1>Repertuar</H1>
+<br>
+<br>
+<h2>Wybierz dzień seansów</h2>
+<br>
+
+<a th:align="center" class="btn btn-success"  th:href="@{showList.html(day=0)}">[[${#dates.createToday().date}]]</a>
+
+<a th:align="center" class="btn btn-success"  th:href="@{showList.html(day=1)}">[[${#dates.createToday().date+1}]]</a>
+
+<a th:align="center" class="btn btn-success"  th:href="@{showList.html(day=2)}">[[${#dates.createToday().date+2}]]</a>
+
+<a th:align="center" class="btn btn-success"  th:href="@{showList.html(day=3)}">[[${#dates.createToday().date+3}]]</a>
+
+<a th:align="center" class="btn btn-success"  th:href="@{showList.html(day=4)}">[[${#dates.createToday().date+4}]]</a>
+
+<a th:align="center" class="btn btn-success"  th:href="@{showList.html(day=5)}">[[${#dates.createToday().date+5}]]</a>
+
+
+
+
+
+
+
+<th:block th:if="${showListPage.isEmpty()}">
+    <h1>Brak seansów</h1>
+</th:block>
+
+<th:block th:if!="${showListPage.isEmpty()} ">
+
+
+
+
+
+
+    <table class="table table-striped">
+        <thead class="thead-dark">
+        <tr>
+            <th>Zdjęcie</th>
+            <th>Nazwa filmu</th>
+            <th>Czas trwania</th>
+            <th>Godziny seansu</th>
+
+
+        </tr>
+        </thead>
+
+
+        <tbody>
+        <tr th:each="show : ${showListPage}">
+            <td><img th:src="${show.movie.photo}" height="100" width="70"></td>
+            <td sec:authorize="isAuthenticated()" ><a  th:href="@{/movieList.html(id=${show.movie.id})} ">[[${show.movie.title}]]</a></td>
+            <td sec:authorize="isAnonymous()" th:text="${show.movie.title}" ></td>
+            <td th:text="${show.movie.duration}"></td>
+            <td>
+            <span th:unless="${show.times.isEmpty()}">
+        <ul>
+           <a
+                   sec:authorize="isAuthenticated()"  th:each="time : ${show.times}"  th:href="@{/reservationForm.html(timeid=${time.id},showid=${show.id})}"><li>[[${time.time}]]</li>
+
+           </a>
+            <p  sec:authorize="isAnonymous()"   th:each="time : ${show.times}">[[${time.time}]]<br></p>
+
+
+        </ul>
+    </span>
+            </td>
+            <td align="right">
+
+                <a sec:authorize="hasRole('ROLE_ADMIN')" class="btn btn-danger"  th:href="@{showList.html(did=${show.id})}">Usuń</a>
+                <a sec:authorize="hasRole('ROLE_ADMIN')" class="btn btn-success"  th:href="@{showForm.html(id=${show.id})}">Edytuj</a>
+
+            </td>
+        </tr>
+
+        </tbody>
+    </table>
+
+
+    </div>
+
+<a sec:authorize="hasRole('ADMIN')" class="btn btn-success" href="showForm.html">Dodaj Nowy</a>
+
+
+</div>
+</div>
+</th:block>
+
+<div th:replace="shared/footer :: footer"></div>
+</body>
+</html>

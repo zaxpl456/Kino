@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<head>
+    <div th:replace="shared/header :: header-css"/>
+    <title>Lista filmów</title>
+</head>
+<body>
+<div th:replace="shared/header :: header('home')"/>
+
+<H1>Lista filmów</H1>
+    <table class="table table-striped">
+
+
+        <tbody>
+        <tr th:each="movie : ${movieListPage}">
+
+            <td><img th:src="${movie.photo}" height="100" width="70"></td>
+            <td>
+
+                <a sec:authorize="isAuthenticated()" th:align="right"  th:href="@{/movieList.html(id=${movie.id})}">[[${movie.title}]]</a>
+                <span sec:authorize="isAnonymous() " th:align="right"> [[${movie.title}]]</span>
+                <br>
+                <span th:align="right"> [[${movie.movieType.name}]]</span>
+            </td>
+            <td sec:authorize="hasRole('ROLE_ADMIN')" >
+                <a class="btn btn-danger" th:href="@{movieList.html(did=${movie.id})}">Usuń</a>
+                <a class="btn btn-success" th:href="@{movieForm.html(id=${movie.id})}">Edytuj</a>
+            </td>
+
+        </tr>
+
+        </tbody>
+    </table>
+
+
+    </div>
+
+    <a sec:authorize="hasRole('ADMIN')" class="btn btn-success" href="movieForm.html">Dodaj Nowy</a>
+
+
+    </div>
+    </div>
+
+<div th:replace="shared/footer :: footer"></div>
+</body>
+</html>

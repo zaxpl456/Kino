@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<head>
+    <div th:replace="shared/header :: header-css"/>
+    <title>Strona domowa</title>
+</head>
+<body>
+<div th:replace="shared/header :: header('home')"/>
+<div id="main" class="container">
+
+
+    <H1>LISTA GATUNKÓW FILMÓW</H1>
+
+
+
+    <table class="table table-striped">
+        <thead class="thead-dark">
+        <tr>
+            <th>Nazwa</th>
+
+        </tr>
+        </thead>
+
+        <tbody>
+        <tr th:each="movieType : ${movieTypeListPage}">
+            <td>[[${movieType.name}]]</td>
+            <td align="right">
+
+                <a class="btn btn-danger"  th:href="@{movieTypeList.html(did=${movieType.id})}">Usuń</a>
+                <a class="btn btn-success"  th:href="@{movieTypeForm.html(id=${movieType.id})}">Edytuj</a>
+
+            </td>
+        </tr>
+
+        </tbody>
+    </table>
+
+
+</div>
+
+
+<a sec:authorize="hasRole('ADMIN')" class="btn btn-success" href="movieTypeForm.html">Dodaj Nowy</a>
+
+
+</body>
+</html>
